@@ -161,6 +161,8 @@ private:
         graph->GetYaxis()->SetLabelOffset(p_desc.axis_label_offset.y());
         graph->GetXaxis()->SetLimits(p_desc.x_range.min(), p_desc.x_range.max());
         graph->GetYaxis()->SetRangeUser(p_desc.y_range.min(), p_desc.y_range.max());
+        graph->GetXaxis()->SetNoExponent(kTRUE);
+        graph->GetXaxis()->SetMoreLogLabels(kTRUE);
     }
 
     bool FindLegendName(LegendType type, std::string& name) const
