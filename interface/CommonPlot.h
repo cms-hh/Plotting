@@ -46,8 +46,10 @@ public:
         main_pad->Draw();
         main_pad->cd();
 
-        auto main_legend = CreateLegend(LegendType::main);
-        auto aux_legend = CreateLegend(LegendType::auxiliary);
+	LimitType legend_limits_to_plot_main, dummy;
+
+        auto main_legend = CreateLegend(LegendType::main, legend_limits_to_plot_main);
+        auto aux_legend = CreateLegend(LegendType::auxiliary, dummy);
 
         std::list<std::shared_ptr<TGraph>> aux_graphs;
         if(aux_legend) {
@@ -68,7 +70,7 @@ public:
         }
 
 
-        static const std::set<LimitType> legend_limits = { LimitType::observed, LimitType::predicted };
+        static const std::set<LimitType> legend_limits = { legend_limits_to_plot_main, LimitType::predicted };
         std::list<std::shared_ptr<TGraph>> all_graphs;
         for(const std::string& l_desc_name : p_desc.limits) {
             if(l_desc_name == "NULL") {
@@ -81,13 +83,13 @@ public:
             const LimitDescriptor& l_desc = l_descs.at(l_desc_name);
 
             for(LimitType limit_type : l_desc.limit_types) {
-                const auto graphs = l_desc.limit_values.ProduceGraphs(limit_type, p_desc.units, l_desc.scale_factors);
-                if(main_legend && l_desc.show_in_legend && graphs.size() && legend_limits.count(limit_type))
-                    main_legend->AddEntry(graphs.front().get(), l_desc.title.c_str(), "l");
-                for(auto graph : graphs) {
-                    ApplyProperties(graph, l_desc, limit_type);
-                    all_graphs.push_back(graph);
-                }
+	      const auto graphs = l_desc.limit_values.ProduceGraphs(limit_type, p_desc.units, l_desc.scale_factors);
+	      if(main_legend && l_desc.show_in_legend && graphs.size() && legend_limits.count(limit_type))
+		main_legend->AddEntry(graphs.front().get(), l_desc.title.c_str(), "l");
+	      for(auto graph : graphs) {
+		ApplyProperties(graph, l_desc, limit_type);
+		all_graphs.push_back(graph);
+	      }
             }
         }
 
@@ -178,12 +180,13 @@ private:
         return false;
     }
 
-    std::shared_ptr<TLegend> CreateLegend(LegendType type)
+    std::shared_ptr<TLegend> CreateLegend(LegendType type, LimitType &legend_limits_to_plot)
     {
         std::string name;
         if(!FindLegendName(type, name))
             return std::shared_ptr<TLegend>();
         const LegendDescriptor& desc = legend_descs.at(name);
+	legend_limits_to_plot = desc.legend_limit;
         const auto& position = GetAbsolutePosition(name);
 
         std::shared_ptr<TLegend> legend(new TLegend(position.x(), position.y(),

@@ -26,8 +26,10 @@ struct LegendDescriptor : PositionedElementDescriptor {
     root_ext::Color color;
     double line_width;
 
+    LimitType legend_limit;
+
     LegendDescriptor()
-        : type(LegendType::main), size(0.5, 0.5), text_size(0.03), font(42), color(kBlack), line_width(1) {}
+      : type(LegendType::main), size(0.5, 0.5), text_size(0.03), font(42), color(kBlack), line_width(1){}
 };
 
 typedef std::unordered_map<std::string, LegendDescriptor> LegendDescriptorCollection;

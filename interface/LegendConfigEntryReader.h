@@ -31,6 +31,7 @@ public:
         CheckReadParamCounts("font", 1, Condition::less_equal);
         CheckReadParamCounts("color", 1, Condition::less_equal);
         CheckReadParamCounts("line_width", 1, Condition::less_equal);
+        CheckReadParamCounts("legend_limit", 1, Condition::less_equal);
 
         (*descriptors)[current.name] = current;
     }
@@ -46,6 +47,7 @@ public:
         ParseEntry("font", current.font);
         ParseEntry("color", current.color);
         ParseEntry("line_width", current.line_width);
+	ParseEntry("legend_limit", current.legend_limit);
     }
 
 private:
