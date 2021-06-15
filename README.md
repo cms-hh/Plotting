@@ -39,6 +39,8 @@ cd ..
 
 ```shell
 cd HHStatAnalysis
+cmsenv
+scram b
 hh-common-plot --help  # output command line help
 hh-common-plot --config Resources/Plots/configs/run2_plot.cfg --input Resources/Limits --output Resources/Plots/Limits/run2_plot_cms_spin0.pdf --plot hh_common_plot_cms_spin0 # produce CMS only spin0 Run II common plot below 1 TeV
 hh-common-plot --config Resources/Plots/configs/run2_plot.cfg --input Resources/Limits --output Resources/Plots/Limits/run2_plot_cms_spin2.pdf --plot hh_common_plot_cms_spin2 # produce CMS only spin2 Run II common plot below 1 TeV
